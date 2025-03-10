@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון גימטרייה ומחמאות</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>מחשבון גימטרייה ומחמאות</h1>
+        <div class="input-container">
+            <input type="text" id="inputName" placeholder="הכנס שם">
+            <select id="gender">
+                <option value="male">בן</option>
+                <option value="female">בת</option>
+            </select>
+        </div>
+        <button onclick="calculateGematria()">חשב</button>
+
+        <h2>פירוט גימטרייה:</h2>
+        <div id="gematriaResults"></div>
+
+        <h2>מחמאות תואמות:</h2>
+        
+        <div id="complimentsResults"></div>
+
+        <div id="loading">מחפש התאמות...</div>
+        <div id="finished" style="display: none; color: green; font-weight: bold;">סיימתי לחפש!</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
