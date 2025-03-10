@@ -84,7 +84,7 @@ function findMatchingCompliments(text, targetGematria, name) {
     sortedCompliments.sort((a, b) => a.localeCompare(b));
 
     if (sortedCompliments.length === 0) {
-        complimentsResults.innerHTML = "<p>לא נמצאו מחמאות מתאימות</p>";
+        complimentsResults.innerHTML = "<p>לקב איבי קראתיך והנה ברכת ברך לא נמצאו קללות מספקות עבורך</p>";
     } else {
         sortedCompliments.forEach(compliment => {
             addComplimentResult(compliment, name);
