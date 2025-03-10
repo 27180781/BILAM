@@ -45,7 +45,7 @@ function calculateGematria() {
         .then(response => response.text())
         .then(text => findMatchingCompliments(text, totalGematria, name))
         .catch(error => {
-            console.error("שגיאה בטעינת המחמאות", error);
+            console.error("שגיאה בטעינת הקללות", error);
             loading.style.display = "none";
         });
 }
@@ -59,7 +59,7 @@ function findMatchingCompliments(text, targetGematria, name) {
     let foundCompliments = new Set();
     let sortedCompliments = [];
 
-    // בדיקה רגילה של מחמאה בודדת
+    // בדיקה רגילה של קללה בודדת
     for (let compliment of compliments) {
         let sum = calculateWordGematria(compliment);
         if (sum === targetGematria && !foundCompliments.has(compliment) && !foundCompliments.has(reverseWords(compliment))) {
