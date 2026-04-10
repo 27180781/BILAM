@@ -13,7 +13,6 @@ body {
     background-repeat: no-repeat; /* למנוע חזרה של התמונה */
 }
 
-
 .container {
     background: white;
     padding: 20px;
@@ -29,42 +28,59 @@ h1 {
 
 .input-container {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    overflow: hidden;
+    margin-bottom: 15px;
 }
 
 input {
-    padding: 10px;
-    width: 70%;
-    border: 1px solid #ddd;
-    border-radius: 5px 0 0 5px;
+    padding: 12px;
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
 }
 
 select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-left: none;
-    border-radius: 0 5px 5px 0;
-    background-color: #eee;
+    padding: 12px;
+    border: none;
+    border-right: 1px solid #ccc;
+    background-color: #f8f9fa;
     cursor: pointer;
+    font-size: 16px;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    width: 100%;
 }
 
 button:hover {
     background-color: #218838;
 }
 
+button:active {
+    transform: scale(0.98);
+}
+
 h2 {
-    margin-top: 20px;
+    margin-top: 25px;
     color: #343a40;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
 }
 
 #gematriaResults, #complimentsResults {
@@ -82,31 +98,6 @@ h2 {
     display: none;
 }
 
-
-.input-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background: white;
-    padding: 5px;
-}
-
-input {
-    padding: 10px;
-    width: 70%;
-    border: none;
-    outline: none;
-}
-
-select {
-    padding: 10px;
-    border: none;
-    background-color: #eee;
-    cursor: pointer;
-}
-
 .compliment-item {
     display: flex;
     align-items: center;
@@ -118,8 +109,18 @@ select {
 }
 
 .info-button {
-    background: none;
+    background-color: #007bff !important;
+    color: white;
     border: none;
-    font-size: 16px;
+    border-radius: 3px;
+    font-size: 14px;
+    padding: 5px 10px;
     cursor: pointer;
+    margin-top: 0;
+    width: auto;
+    transition: background-color 0.2s ease;
+}
+
+.info-button:hover {
+    background-color: #0056b3 !important;
 }
