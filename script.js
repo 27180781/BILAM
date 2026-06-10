@@ -5,20 +5,35 @@ const gematriaMap = {
     'ש': 300, 'ת': 400
 };
 
+// Cache DOM elements
+const domElements = {};
+
+document.addEventListener("DOMContentLoaded", () => {
+    domElements.inputName = document.getElementById('inputName');
+    domElements.gender = document.getElementById('gender');
+    domElements.gematriaResults = document.getElementById('gematriaResults');
+    domElements.complimentsResults = document.getElementById('complimentsResults');
+    domElements.loading = document.getElementById('loading');
+    domElements.finished = document.getElementById('finished');
+
+    // Add keydown event listener to calculate on Enter
+    domElements.inputName.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            calculateGematria();
+        }
+    });
+});
 
 function calculateWordGematria(word) {
     return word.split('').reduce((sum, char) => sum + (gematriaMap[char] || 0), 0);
 }
 
 function calculateGematria() {
-    const name = document.getElementById('inputName').value.trim();
-    const gender = document.getElementById('gender').value;
+    const name = domElements.inputName.value.trim();
+    const gender = domElements.gender.value;
     if (!name) return;
 
-    const gematriaResults = document.getElementById('gematriaResults');
-    const complimentsResults = document.getElementById('complimentsResults');
-    const loading = document.getElementById('loading');
-    const finished = document.getElementById('finished');
+    const { gematriaResults, complimentsResults, loading, finished } = domElements;
 
     gematriaResults.innerHTML = "";
     complimentsResults.innerHTML = "";
@@ -51,32 +66,38 @@ function calculateGematria() {
 }
 
 function findMatchingCompliments(text, targetGematria, name) {
-    const complimentsResults = document.getElementById('complimentsResults');
-    const loading = document.getElementById('loading');
-    const finished = document.getElementById('finished');
+    const { complimentsResults, loading, finished } = domElements;
 
     let compliments = text.split("\n").map(line => line.trim()).filter(Boolean);
     let foundCompliments = new Set();
     let sortedCompliments = [];
 
-    // בדיקה רגילה של קללה בודדת
-    for (let compliment of compliments) {
-        let sum = calculateWordGematria(compliment);
-        if (sum === targetGematria && !foundCompliments.has(compliment) && !foundCompliments.has(reverseWords(compliment))) {
-            foundCompliments.add(compliment);
-            sortedCompliments.push(compliment);
+    // Pre-calculate gematria for all compliments to improve performance
+    let complimentGematria = compliments.map(compliment => ({
+        text: compliment,
+        sum: calculateWordGematria(compliment)
+    }));
+
+    // Check single compliments
+    for (let {text, sum} of complimentGematria) {
+        if (sum === targetGematria && !foundCompliments.has(text) && !foundCompliments.has(reverseWords(text))) {
+            foundCompliments.add(text);
+            sortedCompliments.push(text);
         }
     }
 
-    // בדיקה עם חיבור של שתי מחמאות בעזרת "ו"
-    for (let i = 0; i < compliments.length; i++) {
-        for (let j = i + 1; j < compliments.length; j++) {
-            let combinedCompliment = compliments[i] + " ו" + compliments[j];
-            let combinedSum = calculateWordGematria(compliments[i]) + calculateWordGematria("ו") + calculateWordGematria(compliments[j]);
+    // Check combinations with "ו" (and)
+    const vavSum = calculateWordGematria("ו");
+    for (let i = 0; i < complimentGematria.length; i++) {
+        for (let j = i + 1; j < complimentGematria.length; j++) {
+            let combinedSum = complimentGematria[i].sum + vavSum + complimentGematria[j].sum;
 
-            if (combinedSum === targetGematria && !foundCompliments.has(combinedCompliment)) {
-                foundCompliments.add(combinedCompliment);
-                sortedCompliments.push(combinedCompliment);
+            if (combinedSum === targetGematria) {
+                let combinedCompliment = complimentGematria[i].text + " ו" + complimentGematria[j].text;
+                if (!foundCompliments.has(combinedCompliment)) {
+                    foundCompliments.add(combinedCompliment);
+                    sortedCompliments.push(combinedCompliment);
+                }
             }
         }
     }
@@ -97,7 +118,7 @@ function findMatchingCompliments(text, targetGematria, name) {
 
 
 function addComplimentResult(complimentText, name) {
-    const complimentsResults = document.getElementById('complimentsResults');
+    const { complimentsResults } = domElements;
 
     const div = document.createElement("div");
     div.classList.add("compliment-item");
